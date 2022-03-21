@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Infected : MonoBehaviour
 {
+    public float speed = 15f;
+    public float waitTime = .5f;
     public Transform Paths;
     // Start is called before the first frame update
 
@@ -11,11 +13,14 @@ public class Infected : MonoBehaviour
     private void Start()
     {
         Vector3[] waypoints = new Vector3[Paths.childCount];
-        for (int i = 0; i <waypoints.Length; i ++)
+        for (int i = 0; i < waypoints.Length; i++)
         {
             waypoints[i] = Paths.GetChild(i).position;
-        
+
         }
+        StartCoroutine(TraversePath(waypoints));
+
+
     }
 
     void OnDrawGizmos()
@@ -30,4 +35,26 @@ public class Infected : MonoBehaviour
         }
         Gizmos.DrawLine(previousPosition, startPosition);
     }
+
+    IEnumerator TraversePath(Vector3[] waypoints)
+    {
+        transform.position = waypoints[0];
+
+        int pathIndex = 1;
+        Vector3 nextWaypoint = waypoints[pathIndex];
+
+        while (true)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, nextWaypoint, speed * Time.deltaTime);
+            if (transform.position == nextWaypoint)
+            {
+                pathIndex = (pathIndex + 1) % waypoints.Length;
+                nextWaypoint = waypoints[pathIndex];
+                yield return new WaitForSeconds(waitTime);
+            }
+            yield return null;
+            
+        }
+    }
+
 }
