@@ -37,7 +37,7 @@ public class Item : MonoBehaviour
 
     void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.tag == "test")
+        if (collision.gameObject.tag == "Player")
         {
             canpickup = true;
             whatIgrabbed = collision.gameObject;
