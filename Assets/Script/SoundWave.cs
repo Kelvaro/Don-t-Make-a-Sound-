@@ -140,6 +140,15 @@ public class SoundWave : MonoBehaviour
 
     }
 
+    public void PullTrigger(Collider c)
+    {
+
+        if (c.gameObject.tag == "Terrain")
+        {
+            Debug.Log("Soundwave collided with Terrain");
+        }
+
+    }
   
 
 }
