@@ -56,7 +56,7 @@ public class SoundWave : MonoBehaviour
             
 
 
-            if (timer >= 1.5)
+            if (timer >= 3.0)
             {
                 if (LineTesting != null)
                 {
@@ -89,11 +89,6 @@ public class SoundWave : MonoBehaviour
 
     }
 
-    void deleteCollision(LineRenderer lineRenderer)
-    {
-        MeshCollider meshCollider = lineRenderer.gameObject.GetComponent<MeshCollider>();
-        Destroy(meshCollider);
-    }
 
     public void createWave(float xAxis, float zAxis)
     {
@@ -146,6 +141,7 @@ public class SoundWave : MonoBehaviour
         if (c.gameObject.tag == "Terrain")
         {
             Debug.Log("Soundwave collided with Terrain");
+            Destroy(LineTesting);
         }
 
     }

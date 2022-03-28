@@ -10,21 +10,51 @@ public class Player : MonoBehaviour
     private float delayTime = 0.3f;
     private float timer = 0.3f;
     public float playerAngle;
+
+
     [SerializeField]
     private SoundWave waves;
     public float speed = 3f;
     public Vector3 playerFace;
+
+    bool gameOver;
+
+    [SerializeField]
+    public Ui menuOverlay;
+
+
     void Start()
     {
-      
+        Infected.PlayerSpotted += GameOver;
+        this.gameObject.GetComponent<Rigidbody>().isKinematic = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        turnPlayer();
-        movePlayer();
-      
+        if (!gameOver)
+        {
+            turnPlayer();
+            movePlayer();
+            
+            
+        }
+        else 
+        {
+            this.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+            menuOverlay.showGameOverUI();
+        }
+        
+    }
+
+    private void GameOver()
+    {
+        gameOver = true;
+    }
+
+    private void OnDestroy()
+    {
+        Infected.PlayerSpotted -= GameOver;
     }
 
     void turnPlayer()
