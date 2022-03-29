@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundWave : MonoBehaviour
+public class SoundWaveVer1 : MonoBehaviour
 {
     // Start is called before the first frame update
     //public SoundWave[] childTesting;
@@ -21,15 +21,16 @@ public class SoundWave : MonoBehaviour
     public float Point2Ypositio = 0.5f;
 
     public bool WaveIstantiated = false;
+    private bool WaveCollided = false;
 
-    public GameObject LineTesting;
-
+    public GameObject SoundObject;
+   
 
     // Update is called once per frame
     void Update()
     {
       
-        if (LineTesting != null)
+        if (SoundObject != null)
         {
             addCollision(linerenderer);
             timer = timer + 1 * Time.deltaTime;
@@ -48,7 +49,7 @@ public class SoundWave : MonoBehaviour
             Point3.transform.Translate(-speed * Time.deltaTime, 0, (speed / 3) * Time.deltaTime);
             Point2Ypositio = Point2Ypositio + speed * Time.deltaTime;
 
-            //deleteCollision(linerenderer);
+     
 
             linerenderer.positionCount = pointList.Count;
             linerenderer.SetPositions(pointList.ToArray());
@@ -58,9 +59,9 @@ public class SoundWave : MonoBehaviour
 
             if (timer >= 3.0)
             {
-                if (LineTesting != null)
+                if (SoundObject != null)
                 {
-                    Destroy(LineTesting);
+                    Destroy(SoundObject);
                     timer = 0;
                     WaveIstantiated = false;
                 }
@@ -86,33 +87,37 @@ public class SoundWave : MonoBehaviour
         lineRenderer.BakeMesh(mesh, false);
         meshCollider.sharedMesh = mesh;
 
-
+        //this method would continuously update the soundwave's collision as it expands further away.
     }
 
 
     public void createWave(float xAxis, float zAxis)
     {
-        WaveIstantiated = true;
+        WaveIstantiated = true;  
+
         for (int i = 0; i < 8; i++)
         {
-            Instantiate(LineTesting, new Vector3(xAxis, 4, zAxis), Quaternion.Euler(0, 0 + (45 * i), 90));
-            
-            
-            //linerenderer.transform.position = position;
+            Instantiate(SoundObject, new Vector3(xAxis, 4, zAxis), Quaternion.Euler(0, 0 + (45 * i), 90));
+            //creates 8 waves each rotating in 45 degrees from the starting point
+            //8 waves since there are 8 directions in the compass.
         }
-        // Mesh mesh = new Mesh();
-        //linerenderer.gameObject.AddComponent<MeshCollider>();
-        //linerenderer.BakeMesh(mesh, true);
-        //Instantiate(waves, position, Quaternion.Euler(0, 0, 90));
-       
+
+
+        /*
+        for (int i = 0; i < 8; i++)
+        {
+            Instantiate(SoundObject, new Vector3(xAxis, 4, zAxis), Quaternion.Euler(0, 0 + (45 * i), 90));
+            
+            //creates 8 waves each rotating in 45 degrees from the starting point
+            //8 waves since there are 8 directions in the compass.
+        } */
+
+
     }
 
-    public void destroyWave()
-    {
-        Destroy(LineTesting);
-    }
 
-    void OnTriggerEnter(Collider collision)
+
+    /*void OnTriggerEnter(Collider collision)
     {
         //Debug.Log("function running");
 
@@ -134,16 +139,28 @@ public class SoundWave : MonoBehaviour
         }
 
     }
-
+    Should check if we can delete this
+    */
     public void PullTrigger(Collider c)
     {
-
+        //method that takes collider as a parameter.
+        //required since the wave is a child.
         if (c.gameObject.tag == "Terrain")
         {
             Debug.Log("Soundwave collided with Terrain");
-            Destroy(LineTesting);
+            Destroy(SoundObject);
         }
 
+    }
+
+    public bool getRecentWave()
+    {
+        return WaveCollided;  
+    }
+
+    public void setRecentWave(bool hit)
+    {
+        WaveCollided = hit;
     }
   
 

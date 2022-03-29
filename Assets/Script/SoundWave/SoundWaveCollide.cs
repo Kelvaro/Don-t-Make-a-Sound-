@@ -6,6 +6,7 @@ public class SoundWaveCollide : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
+        //gameObject.GetComponentInParent<SoundWave>().PullTrigger(other);
         gameObject.GetComponentInParent<SoundWave>().PullTrigger(other);
     }
 }

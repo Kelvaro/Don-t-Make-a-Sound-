@@ -7,9 +7,8 @@ public class Infected : MonoBehaviour
 
     public static event System.Action PlayerSpotted;
 
-    public float speed = 15f;
-    public float waitTime = .5f;
-    public float turnSpeed = 10f;
+
+    public float waitTime = 0;
     public float timeDis = 0f;
 
     public Light spotlight;
@@ -22,6 +21,8 @@ public class Infected : MonoBehaviour
 
     public bool isDistracted;
 
+    public Vector3[] waypoints;
+
     private NavMeshAgent navMesh;
     // Start is called before the first frame update
 
@@ -33,7 +34,7 @@ public class Infected : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         viewAngle = spotlight.spotAngle;
 
-        Vector3[] waypoints = new Vector3[Paths.childCount];
+        waypoints = new Vector3[Paths.childCount];
         for (int i = 0; i < waypoints.Length; i++)
         {
             waypoints[i] = Paths.GetChild(i).position;
@@ -116,56 +117,52 @@ public class Infected : MonoBehaviour
 
             if (navMesh.remainingDistance <= navMesh.stoppingDistance)
             {
-                //Debug.Log("Next Destination");
+
                 pathIndex = (pathIndex + 1) % waypoints.Length;
                 nextWaypoint = waypoints[pathIndex];
-                yield return new WaitForSeconds(waitTime);
-                yield return StartCoroutine(faceTowards(nextWaypoint));
+                navMesh.SetDestination(nextWaypoint);
+                Debug.Log("Next Destination is: " + pathIndex);
+                yield return new WaitForSeconds(waitTime = Random.Range(0, 7));
+
+                //yield return StartCoroutine(faceTowards(nextWaypoint));
             }
             yield return null;
 
         }
     }
-    IEnumerator faceTowards(Vector3 turnTowards)
-    {
-        Vector3 dirFace = (turnTowards - transform.position).normalized;
-        float targetAngle = 90 - Mathf.Atan2(dirFace.z, dirFace.x) * Mathf.Rad2Deg;
 
-        while (Mathf.Abs(Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle)) > 0.05f)
-        {
-            float angle = Mathf.MoveTowardsAngle(transform.eulerAngles.y, targetAngle, turnSpeed * Time.deltaTime);
-            transform.eulerAngles = Vector3.up * angle;
-            yield return null;
-        }
-
-    }
 
 
 
 
     void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.tag == "SoundWave")
+        if (collision.gameObject.tag == "SoundWave" && !collision.gameObject.GetComponentInParent<SoundWaveCheck>().getRecentWave())
         {
-            Debug.Log("Soundwave hit!");
+            //Debug.Log("Soundwave hit!");
             StopAllCoroutines();
 
+            //collision.gameObject.GetComponentInParent<SoundWave>().setRecentWave(true);
+
+            // Debug.Log("this wave has been hit");
             Vector3 whereToGo = collision.transform.position;
             navMesh.SetDestination(whereToGo);
             isDistracted = true;
+            collision.gameObject.GetComponentInParent<SoundWaveCheck>().setRecentWave(true);
+            timeDis = 0;
         }
     }
 
     void countDistraction()
     {
 
-        Debug.Log("starting counter");
+        //Debug.Log("starting counter");
 
         timeDis = timeDis + 1 * Time.deltaTime;
 
         if (timeDis >= 6.0)
         {
-            Debug.Log("going back");
+            //Debug.Log("going back");
 
 
             Vector3[] waypoints = new Vector3[Paths.childCount];
@@ -178,9 +175,10 @@ public class Infected : MonoBehaviour
 
             if (navMesh.remainingDistance <= navMesh.stoppingDistance)
             {
-                Debug.Log("restarting patrol");
-                StartCoroutine(TraversePath(waypoints));
+                //Debug.Log("restarting patrol");
                 isDistracted = false;
+                StartCoroutine(TraversePath(waypoints));
+                timeDis = 0;
             }
 
         }
