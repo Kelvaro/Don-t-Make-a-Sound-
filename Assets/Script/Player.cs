@@ -80,6 +80,7 @@ public class Player : MonoBehaviour
             float xAx = transform.position.x;
             float zAx = transform.position.z;
             timer += Time.deltaTime;
+            waves.setSpeed(7f);
             if (timer > delayTime)
             {
 

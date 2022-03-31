@@ -66,7 +66,7 @@ public class SoundWave : MonoBehaviour
             {
                 if (OriginPoint != null)
                 {
-                    Debug.Log("Soundwave destroyed");
+                    //Debug.Log("Soundwave destroyed");
                     Destroy(OriginPoint);
                     timer = 0;
                     WaveIstantiated = false;
@@ -157,7 +157,7 @@ public class SoundWave : MonoBehaviour
         if (c.gameObject.tag == "Terrain")
         {
             Debug.Log("Soundwave collided with Terrain");
-            Destroy(OriginPoint);
+            Destroy(Waves);
         }
 
     }
@@ -172,7 +172,7 @@ public class SoundWave : MonoBehaviour
         WaveCollided = hit;
     }
 
-    private void setSpeed(float WaveSpeed)
+    public void setSpeed(float WaveSpeed)
     {
         speed = WaveSpeed;
     }

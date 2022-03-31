@@ -5,9 +5,7 @@ using UnityEngine;
 public class Item : MonoBehaviour
 {
 
-    //float throwForce = 600;
-    Vector3 objectPos;
-    float distance;
+    public float speed;
     public float chargePower;
     bool canpickup;
     bool hasItem;
@@ -44,7 +42,7 @@ public class Item : MonoBehaviour
             Debug.Log("OnTriggerEnter processing");
         }
 
-        if (collision.gameObject.tag == "Terrain")
+        if ((collision.gameObject.tag == "Terrain" || collision.gameObject.tag == "Terrain2") && this.transform.parent==null)
         {
             float xAx = transform.position.x;
             float zAx = transform.position.z;
@@ -83,8 +81,7 @@ public class Item : MonoBehaviour
         if (hasItem && Input.GetMouseButton(0))
         {
 
-            chargePower = 1.0f / 4.0f + chargePower;
-           
+            chargePower = 1.0f / 1000.0f + chargePower;
             
 
             Debug.Log("Charge Power level is " + chargePower);
@@ -92,10 +89,48 @@ public class Item : MonoBehaviour
         if (hasItem && Input.GetMouseButtonUp(0))
         {
             Debug.Log("Throwing Item");
+            if (chargePower > 5)
+            {
+                chargePower = 5;
+            }
+            switch ((int)chargePower)
+            {
+                case 0:
+                    speed = 20f;
+                    waves.setSpeed(3f);
+                    break;
+                case 1:
+                    speed = 25f;
+                    waves.setSpeed(5f);
+                    break;
+                case 2:
+                    speed = 30f;
+                    waves.setSpeed(7f);
+                    break;
+                case 3:
+                    speed = 35f;
+                    waves.setSpeed(10f);
+                    break;
+                case 4:
+                    speed = 40f;
+                    waves.setSpeed(13f);
+                    break;
+                case 5:
+                    speed = 45f;
+                    waves.setSpeed(16f);
+                    break;
+                default:
+                    speed = 10f;
+                    waves.setSpeed(2f);
+                    break;
+
+            }
+
+
             this.transform.parent = null;
             this.gameObject.GetComponent<Rigidbody>().useGravity = true;
             this.gameObject.GetComponent<Rigidbody>().isKinematic = false;
-            this.gameObject.GetComponent<Rigidbody>().velocity = transform.forward * 30f;
+            this.gameObject.GetComponent<Rigidbody>().velocity = transform.forward * speed;
 
         }
     }

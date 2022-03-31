@@ -34,15 +34,19 @@ public class Infected : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         viewAngle = spotlight.spotAngle;
 
-        waypoints = new Vector3[Paths.childCount];
-        for (int i = 0; i < waypoints.Length; i++)
+
+        if (Paths.childCount > 1)
         {
-            waypoints[i] = Paths.GetChild(i).position;
-            waypoints[i] = new Vector3(waypoints[i].x, transform.position.y, waypoints[i].z);
+            waypoints = new Vector3[Paths.childCount];
+            for (int i = 0; i < waypoints.Length; i++)
+            {
+                waypoints[i] = Paths.GetChild(i).position;
+                //waypoints[i] = new Vector3(waypoints[i].x, transform.position.y, waypoints[i].z);
+            }
+            StartCoroutine(TraversePath(waypoints));
+
+
         }
-        StartCoroutine(TraversePath(waypoints));
-
-
     }
 
     private void Update()
@@ -69,18 +73,27 @@ public class Infected : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Vector3 startPosition = Paths.GetChild(0).position;
-        Vector3 previousPosition = startPosition;
-        foreach (Transform waypoint in Paths)
+        if (Paths.childCount > 0)
         {
-            Gizmos.DrawSphere(waypoint.position, .3f);
-            Gizmos.DrawLine(previousPosition, waypoint.position);
-            previousPosition = waypoint.position;
-        }
-        Gizmos.DrawLine(previousPosition, startPosition);
+            Vector3 startPosition = Paths.GetChild(0).position;
+            Vector3 previousPosition = startPosition;
+            foreach (Transform waypoint in Paths)
+            {
+                Gizmos.DrawSphere(waypoint.position, .3f);
+                Gizmos.DrawLine(previousPosition, waypoint.position);
+                previousPosition = waypoint.position;
+            }
 
+            Gizmos.DrawLine(previousPosition, startPosition);
+        }
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position, transform.forward * viewDistance);
+
+
+
+
+
+
     }
 
     bool DetectPlayer()
@@ -121,7 +134,7 @@ public class Infected : MonoBehaviour
                 pathIndex = (pathIndex + 1) % waypoints.Length;
                 nextWaypoint = waypoints[pathIndex];
                 navMesh.SetDestination(nextWaypoint);
-                Debug.Log("Next Destination is: " + pathIndex);
+                //Debug.Log("Next Destination is: " + pathIndex);
                 yield return new WaitForSeconds(waitTime = Random.Range(0, 7));
 
                 //yield return StartCoroutine(faceTowards(nextWaypoint));
@@ -157,28 +170,22 @@ public class Infected : MonoBehaviour
     {
 
         //Debug.Log("starting counter");
-
         timeDis = timeDis + 1 * Time.deltaTime;
 
-        if (timeDis >= 6.0)
+        if (timeDis >= 6.0 && Paths.childCount > 0)
         {
-            //Debug.Log("going back");
+            Debug.Log("going back");
 
 
-            Vector3[] waypoints = new Vector3[Paths.childCount];
-            for (int i = 0; i < waypoints.Length; i++)
-            {
-                waypoints[i] = Paths.GetChild(i).position;
-                waypoints[i] = new Vector3(waypoints[i].x, transform.position.y, waypoints[i].z);
-            }
             navMesh.SetDestination(waypoints[Random.Range(0, waypoints.Length)]);
 
             if (navMesh.remainingDistance <= navMesh.stoppingDistance)
             {
                 //Debug.Log("restarting patrol");
                 isDistracted = false;
-                StartCoroutine(TraversePath(waypoints));
-                timeDis = 0;
+                if (Paths.childCount > 0)
+                    StartCoroutine(TraversePath(waypoints));
+
             }
 
         }
