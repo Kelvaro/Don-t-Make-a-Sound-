@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
     {
         Infected.PlayerSpotted += GameOver;
         this.gameObject.GetComponent<Rigidbody>().isKinematic = false;
+        
     }
 
     // Update is called once per frame
@@ -108,6 +109,17 @@ public class Player : MonoBehaviour
             timer = 0.3f;
         }
 
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Finish")
+        { 
+            Debug.Log("Finish!");
+            menuOverlay.showNextLevelUi();
+
+
+        }
     }
 
 
