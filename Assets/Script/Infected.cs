@@ -152,7 +152,7 @@ public class Infected : MonoBehaviour
     {
         if (collision.gameObject.tag == "SoundWave" && !collision.gameObject.GetComponentInParent<SoundWaveCheck>().getRecentWave())
         {
-            //Debug.Log("Soundwave hit!");
+            Debug.Log("Soundwave hiting infected!");
             StopAllCoroutines();
 
             //collision.gameObject.GetComponentInParent<SoundWave>().setRecentWave(true);

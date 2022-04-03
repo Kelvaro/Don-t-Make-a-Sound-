@@ -32,6 +32,12 @@ public class SoundWave : MonoBehaviour
     public GameObject Waves;
 
     // Update is called once per frame
+
+    private void Start()
+    {
+        WaveCollided = false;
+    }
+
     void Update()
     {
 
@@ -104,7 +110,7 @@ public class SoundWave : MonoBehaviour
 
         for (int i = 0; i < 8; i++)
         {
-            GameObject newWaves = Instantiate(Waves, new Vector3(xAxis, 4, zAxis), Quaternion.Euler(0, 0 + (45 * i), 90));
+            GameObject newWaves = Instantiate(Waves, new Vector3(xAxis, 2, zAxis), Quaternion.Euler(0, 0 + (45 * i), 90));
             newWaves.transform.parent = OriginPoint.transform;
 
             //creates 8 waves each rotating in 45 degrees from the starting point

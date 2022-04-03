@@ -8,9 +8,11 @@ public class Ui : MonoBehaviour
     //public GameObject nextLevelUI;
     public GameObject gameOverUI;
     public GameObject nextLevelUi;
+    public GameObject finishedUi;
     
 
     public static int currentLevel = 0;
+    const int maxs = 6;
 
     public string[] levels;
     // Start is called before the first frame update
@@ -20,33 +22,50 @@ public class Ui : MonoBehaviour
         int sceneID;
         sceneID = SceneManager.GetActiveScene().buildIndex;
         Debug.Log(sceneID);
-        SceneManager.GetSceneByName("Testing");
+        levels = new string[maxs] {"Menu","Level1", "Level2", "Level3", "Level4", "Level5"};
     }
 
     public void showGameOverUI()
     {
-        //this.gameObject.SetActive(true);
+        this.gameObject.SetActive(true);
         gameOverUI.SetActive(true);
     }
 
     public void restartLevel()
     {
-        SceneManager.LoadScene(currentLevel);  
+        SceneManager.LoadScene(levels[currentLevel]);  
     }
 
     public void toMenu()
     {
-        currentLevel = 0;  
+        currentLevel = 0;
+        SceneManager.LoadScene(0);
     }
 
     public void showNextLevelUi()
     {
-        nextLevelUi.SetActive(true);
+        if (currentLevel != 5)
+        { 
+          nextLevelUi.SetActive(true);
+        }
+        else 
+        {
+            finishedUi.SetActive(true);
+        }
     }
     public void nextLevel()
     {
-        currentLevel++;
-        SceneManager.LoadScene(currentLevel);
+            currentLevel++;
+            SceneManager.LoadScene(levels[currentLevel]);
+        Debug.Log("Current Level is :" + currentLevel);
     }
+
+    public void quitGame()
+    {
+        Application.Quit();
+    
+    }
+
+    
 
 }
