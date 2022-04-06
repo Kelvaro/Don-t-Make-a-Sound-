@@ -162,7 +162,7 @@ public class SoundWave : MonoBehaviour
         //required since the wave is a child.
         if (c.gameObject.tag == "Terrain")
         {
-            Debug.Log("Soundwave collided with Terrain");
+            //Debug.Log("Soundwave collided with Terrain");
             Destroy(Waves);
         }
 

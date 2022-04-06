@@ -150,8 +150,9 @@ public class Infected : MonoBehaviour
 
     void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.tag == "SoundWave" && !collision.gameObject.GetComponentInParent<SoundWaveCheck>().getRecentWave())
+        if (collision.gameObject.tag == "SoundWave")
         {
+
             Debug.Log("Soundwave hiting infected!");
             StopAllCoroutines();
 
@@ -179,14 +180,23 @@ public class Infected : MonoBehaviour
 
             navMesh.SetDestination(waypoints[Random.Range(0, waypoints.Length)]);
 
+            if (timeDis > 10)
+            {
+                Debug.Log("navMesh stuck, restarting route");
+                navMesh.enabled = false;
+                navMesh.enabled = false;
+            }
+
             if (navMesh.remainingDistance <= navMesh.stoppingDistance)
             {
                 //Debug.Log("restarting patrol");
+                timeDis = 0;
                 isDistracted = false;
                 if (Paths.childCount > 0)
                     StartCoroutine(TraversePath(waypoints));
 
             }
+          
 
         }
 
