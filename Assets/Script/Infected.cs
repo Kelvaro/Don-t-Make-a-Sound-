@@ -22,7 +22,7 @@ public class Infected : MonoBehaviour
     public bool isDistracted;
 
     public Vector3[] waypoints;
-
+    public AudioSource alert;
     private NavMeshAgent navMesh;
     // Start is called before the first frame update
 
@@ -34,7 +34,7 @@ public class Infected : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         viewAngle = spotlight.spotAngle;
 
-
+        alert = GameObject.FindObjectOfType<AudioSource>();
         if (Paths.childCount > 1)
         {
             waypoints = new Vector3[Paths.childCount];
@@ -152,7 +152,7 @@ public class Infected : MonoBehaviour
     {
         if (collision.gameObject.tag == "SoundWave")
         {
-
+            alert.Play();
             Debug.Log("Soundwave hiting infected!");
             StopAllCoroutines();
 
