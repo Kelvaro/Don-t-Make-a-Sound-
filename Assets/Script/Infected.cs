@@ -137,7 +137,7 @@ public class Infected : MonoBehaviour
                 //Debug.Log("Next Destination is: " + pathIndex);
                 yield return new WaitForSeconds(waitTime = Random.Range(0, 7));
 
-                //yield return StartCoroutine(faceTowards(nextWaypoint));
+           
             }
             yield return null;
 
@@ -156,7 +156,7 @@ public class Infected : MonoBehaviour
             Debug.Log("Soundwave hiting infected!");
             StopAllCoroutines();
 
-            //collision.gameObject.GetComponentInParent<SoundWave>().setRecentWave(true);
+           
 
             // Debug.Log("this wave has been hit");
             Vector3 whereToGo = collision.transform.position;
@@ -175,14 +175,14 @@ public class Infected : MonoBehaviour
 
         if (timeDis >= 6.0 && Paths.childCount > 0)
         {
-            Debug.Log("going back");
+            //Debug.Log("going back");
 
 
             navMesh.SetDestination(waypoints[Random.Range(0, waypoints.Length)]);
 
             if (timeDis > 10)
             {
-                Debug.Log("navMesh stuck, restarting route");
+                //Debug.Log("navMesh stuck, restarting route");
                 navMesh.enabled = false;
                 navMesh.enabled = false;
             }

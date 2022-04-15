@@ -45,7 +45,7 @@ public class SoundWave : MonoBehaviour
         {
             addCollision(linerenderer);
             timer = timer + 1 * Time.deltaTime;
-            Point2.transform.localPosition = new Vector3((Point1.transform.localPosition.x + Point3.transform.localPosition.x), Point2Ypositio, (Point1.transform.localPosition.z + Point3.transform.localPosition.z) / 2);
+            Point2.transform.localPosition = new Vector3(((Point1.transform.localPosition.x + Point3.transform.localPosition.x)/2), Point2Ypositio, (Point1.transform.localPosition.z + Point3.transform.localPosition.z) / 2);
             var pointList = new List<Vector3>();
 
             for (float ratio = 0; ratio <= 1; ratio += 1 / vertexCount)
@@ -116,46 +116,9 @@ public class SoundWave : MonoBehaviour
             //creates 8 waves each rotating in 45 degrees from the starting point
             //8 waves since there are 8 directions in the compass.
         }
-
-
-        /*
-        for (int i = 0; i < 8; i++)
-        {
-            Instantiate(SoundObject, new Vector3(xAxis, 4, zAxis), Quaternion.Euler(0, 0 + (45 * i), 90));
-            
-            //creates 8 waves each rotating in 45 degrees from the starting point
-            //8 waves since there are 8 directions in the compass.
-        } */
-
-
     }
 
 
-
-    /*void OnTriggerEnter(Collider collision)
-    {
-        //Debug.Log("function running");
-
-        if (collision.gameObject.tag == "Player")
-        {
-            Debug.Log("Soundwave collision detected from the player");
-
-        }
-        if (collision.gameObject.tag == "Terrain")
-        {
-            Debug.Log("Soundwave collision detected");
-
-        }
-
-        if (collision.gameObject.tag == "test")
-        {
-            Debug.Log("Soundwave collision detected");
-
-        }
-
-    }
-    Should check if we can delete this
-    */
     public void PullTrigger(Collider c)
     {
         //method that takes collider as a parameter.

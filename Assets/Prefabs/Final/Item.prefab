@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8974243834250030449}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 57.44, y: 3, z: 40.72}
+  m_LocalPosition: {x: 56.119, y: 3, z: 40.72}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -109,6 +109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7057e6bf094a1f6479c63588f1b0cde1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 0
   chargePower: 0
   whatIgrabbed: {fileID: 0}
   waves: {fileID: 7692109855707000469, guid: e6c1b8b292514eb4c8773ecb59f66b1e, type: 3}
