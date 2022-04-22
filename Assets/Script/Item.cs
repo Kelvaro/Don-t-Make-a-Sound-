@@ -16,18 +16,23 @@ public class Item : MonoBehaviour
     [SerializeField]
     private SoundWave waves;
 
-    private void Start()
+    public AudioClip breaking;
+    public AudioSource testing;
+    void Start()
     {
         canpickup = false;
         hasItem = false;
         chargePower = 0;
+        GetComponent<AudioSource>().playOnAwake = false;
+        GetComponent<AudioSource>().clip = breaking;
+
+      
     }
 
     void Update()
     {
         //upon key click, pick up the object and follow the player
         //upon mouse click, throw the object with a certain speed and ensure it spawns the soundwavwe upon collision with the ground, walls etc
-        //this.transform.position = playerPoint.position;
         pickUp();
 
     }
@@ -39,18 +44,22 @@ public class Item : MonoBehaviour
         {
             canpickup = true;
             whatIgrabbed = collision.gameObject;
-            Debug.Log("OnTriggerEnter processing");
+
         }
 
         if ((collision.gameObject.tag == "Terrain" || collision.gameObject.tag == "Terrain2") && this.transform.parent==null)
         {
+            Debug.Log("OnTriggerEnter processing on Terrain");
+            GetComponent<AudioSource>().Play();
             float xAx = transform.position.x;
             float zAx = transform.position.z;
             waves.createWave(xAx, zAx);
-            Destroy(this.gameObject);
+            
+            Destroy(this.gameObject, 0.5f);
                
         }
     }
+
 
     void OnTriggerExit(Collider other)
     {
@@ -64,7 +73,6 @@ public class Item : MonoBehaviour
         {
             if (Input.GetKeyDown("e"))  // can be e or any key
             {
-                //this.GetComponent<Rigidbody>().isKinematic = true;
                 this.GetComponent<Rigidbody>().isKinematic = true;
                 //makes the object become a child of the parent so that it moves along with its parent
                 this.transform.position = whatIgrabbed.transform.position; // sets the position of the object to your hand position
@@ -72,7 +80,9 @@ public class Item : MonoBehaviour
                 this.transform.localPosition = new Vector3(0, 0.2f, 0.4f);
                 this.transform.localRotation = Quaternion.Euler(0,0,0);
                 hasItem = true;
-                // Debug.Log("Item Pick up processed");
+
+              
+
             }
 
 
@@ -131,6 +141,8 @@ public class Item : MonoBehaviour
             this.gameObject.GetComponent<Rigidbody>().useGravity = true;
             this.gameObject.GetComponent<Rigidbody>().isKinematic = false;
             this.gameObject.GetComponent<Rigidbody>().velocity = transform.forward * speed;
+            
+            
 
         }
     }

@@ -46,21 +46,24 @@ public class Ui : MonoBehaviour
 
     public void showNextLevelUi()
     {
-        if (currentLevel != 5)
-        {
+
             nextLevelUi.SetActive(true);
-        }
-        else
-        {
-            finishedUi.SetActive(true);
-        }
+
     }
     public void nextLevel()
     {
         Debug.Log("Key clicked that calls method nextLevel()");
         currentLevel++;
-        SceneManager.LoadScene(levels[currentLevel]);
-        Debug.Log("Current Level is :" + currentLevel);
+        if (currentLevel != 6)
+        {
+            SceneManager.LoadScene(levels[currentLevel]);
+        }
+        else 
+        {
+            finishedUi.SetActive(true);
+        }
+     
+        Debug.Log("Current Level is: " + currentLevel);
     }
 
     public void quitGame()

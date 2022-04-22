@@ -316,6 +316,7 @@ MonoBehaviour:
   - {x: 68.11, y: 0, z: 6.760002}
   - {x: 69.8, y: 0, z: 94.53}
   - {x: 49, y: 0, z: 93.33}
+  alert: {fileID: 8300000, guid: 65f0fab54932ec444a4c18c9ee4919ca, type: 3}
 --- !u!54 &2677109361116497438
 Rigidbody:
   m_ObjectHideFlags: 0

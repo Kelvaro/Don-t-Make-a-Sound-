@@ -22,12 +22,15 @@ public class Player : MonoBehaviour
     [SerializeField]
     public Ui menuOverlay;
 
+    public AudioClip running;
+
 
     void Start()
     {
         Infected.PlayerSpotted += GameOver;
         this.gameObject.GetComponent<Rigidbody>().isKinematic = false;
-        
+        GetComponent<AudioSource>().playOnAwake = false;
+        GetComponent<AudioSource>().clip = running;
     }
 
     // Update is called once per frame
@@ -84,7 +87,7 @@ public class Player : MonoBehaviour
             waves.setSpeed(7f);
             if (timer > delayTime)
             {
-
+                GetComponent<AudioSource>().Play();
                 waves.createWave(xAx, zAx);
                 timer = timer - delayTime;
             }
@@ -96,7 +99,7 @@ public class Player : MonoBehaviour
 
         );
 
-
+            
         }
         else
         {

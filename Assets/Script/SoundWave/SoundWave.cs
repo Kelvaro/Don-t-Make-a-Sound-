@@ -36,6 +36,7 @@ public class SoundWave : MonoBehaviour
     private void Start()
     {
         WaveCollided = false;
+        speed = 7f;
     }
 
     void Update()
@@ -125,7 +126,6 @@ public class SoundWave : MonoBehaviour
         //required since the wave is a child.
         if (c.gameObject.tag == "Terrain")
         {
-            //Debug.Log("Soundwave collided with Terrain");
             Destroy(Waves);
         }
 

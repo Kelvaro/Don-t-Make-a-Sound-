@@ -248,7 +248,7 @@ MonoBehaviour:
   Paths: {fileID: 7399269287638681303}
   isDistracted: 1
   waypoints: []
-  alert: {fileID: 0}
+  alert: {fileID: 8300000, guid: 65f0fab54932ec444a4c18c9ee4919ca, type: 3}
 --- !u!54 &7399269287340018360
 Rigidbody:
   m_ObjectHideFlags: 0

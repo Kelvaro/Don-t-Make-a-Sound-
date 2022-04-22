@@ -22,7 +22,7 @@ public class Infected : MonoBehaviour
     public bool isDistracted;
 
     public Vector3[] waypoints;
-    public AudioSource alert;
+    public AudioClip alert;
     private NavMeshAgent navMesh;
     // Start is called before the first frame update
 
@@ -34,14 +34,15 @@ public class Infected : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         viewAngle = spotlight.spotAngle;
 
-        alert = GameObject.FindObjectOfType<AudioSource>();
+        GetComponent<AudioSource>().playOnAwake = false;
+        GetComponent<AudioSource>().clip = alert;
         if (Paths.childCount > 1)
         {
             waypoints = new Vector3[Paths.childCount];
             for (int i = 0; i < waypoints.Length; i++)
             {
                 waypoints[i] = Paths.GetChild(i).position;
-                //waypoints[i] = new Vector3(waypoints[i].x, transform.position.y, waypoints[i].z);
+              
             }
             StartCoroutine(TraversePath(waypoints));
 
@@ -53,7 +54,7 @@ public class Infected : MonoBehaviour
     {
         if (DetectPlayer())
         {
-            //Debug.Log("player Detected");
+ 
             if (PlayerSpotted != null)
             {
                 PlayerSpotted();
@@ -64,7 +65,7 @@ public class Infected : MonoBehaviour
 
         if (isDistracted)
         {
-            //Debug.Log("isDistracted going");
+
             countDistraction();
         }
 
@@ -118,14 +119,13 @@ public class Infected : MonoBehaviour
 
     IEnumerator TraversePath(Vector3[] waypoints)
     {
-        //transform.position = waypoints[0];
+        
 
         int pathIndex = 1;
         Vector3 nextWaypoint = waypoints[pathIndex];
         transform.LookAt(nextWaypoint);
         while (true)
         {
-            //transform.position = Vector3.MoveTowards(transform.position, nextWaypoint, speed * Time.deltaTime);
             navMesh.SetDestination(nextWaypoint);
 
             if (navMesh.remainingDistance <= navMesh.stoppingDistance)
@@ -134,7 +134,7 @@ public class Infected : MonoBehaviour
                 pathIndex = (pathIndex + 1) % waypoints.Length;
                 nextWaypoint = waypoints[pathIndex];
                 navMesh.SetDestination(nextWaypoint);
-                //Debug.Log("Next Destination is: " + pathIndex);
+
                 yield return new WaitForSeconds(waitTime = Random.Range(0, 7));
 
            
@@ -152,13 +152,12 @@ public class Infected : MonoBehaviour
     {
         if (collision.gameObject.tag == "SoundWave")
         {
-            alert.Play();
+            GetComponent<AudioSource>().Play();
             Debug.Log("Soundwave hiting infected!");
             StopAllCoroutines();
 
            
 
-            // Debug.Log("this wave has been hit");
             Vector3 whereToGo = collision.transform.position;
             navMesh.SetDestination(whereToGo);
             isDistracted = true;
@@ -170,26 +169,25 @@ public class Infected : MonoBehaviour
     void countDistraction()
     {
 
-        //Debug.Log("starting counter");
         timeDis = timeDis + 1 * Time.deltaTime;
 
         if (timeDis >= 6.0 && Paths.childCount > 0)
         {
-            //Debug.Log("going back");
+
 
 
             navMesh.SetDestination(waypoints[Random.Range(0, waypoints.Length)]);
 
             if (timeDis > 10)
             {
-                //Debug.Log("navMesh stuck, restarting route");
+ 
                 navMesh.enabled = false;
                 navMesh.enabled = false;
             }
 
             if (navMesh.remainingDistance <= navMesh.stoppingDistance)
             {
-                //Debug.Log("restarting patrol");
+
                 timeDis = 0;
                 isDistracted = false;
                 if (Paths.childCount > 0)

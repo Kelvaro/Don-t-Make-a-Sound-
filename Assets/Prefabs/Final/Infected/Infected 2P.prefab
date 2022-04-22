@@ -123,6 +123,7 @@ MonoBehaviour:
   Paths: {fileID: 8995498696503666744}
   isDistracted: 0
   waypoints: []
+  alert: {fileID: 8300000, guid: 65f0fab54932ec444a4c18c9ee4919ca, type: 3}
 --- !u!54 &8995498694871539454
 Rigidbody:
   m_ObjectHideFlags: 0
